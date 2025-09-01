@@ -9,15 +9,15 @@ OCPP Fuzzing Project
 기대 효과: Crash/오류 응답/시퀀스 위반을 통해 서버 견고성 평가 및 보안 가이드라인 도출
 
 Features
-  1) Corpus Builder + Mutator
-    기본 OCPP 시드(Authorize, BootNotification 등)를 자동 생성
-    필드 누락/타입 변경/oversize/쓰레기 필드 추가 변형
-  2) Fuzz Sender
-    WebSocket (subprotocol=ocpp1.6) 기반으로 하나씩 전송
-    CallResult/CallError/TIMEOUT/CLOSED 결과 수집
-  3) Collector
-    모든 케이스의 응답을 CSV 로그로 기록
-    latency, errorCode, result 분류
-  4)Analyzer (추가 예정)
-    CSV 기반 통계/차트
-    Crash/Timeout 패턴 분석
+1) Corpus Builder + Mutator
+- 기본 OCPP 시드(Authorize, BootNotification 등)를 자동 생성
+- 필드 누락/타입 변경/oversize/쓰레기 필드 추가 변형
+2) Fuzz Sender
+- WebSocket (subprotocol=ocpp1.6) 기반으로 하나씩 전송
+- CallResult/CallError/TIMEOUT/CLOSED 결과 수집
+3) Collector
+- 모든 케이스의 응답을 CSV 로그로 기록
+- latency, errorCode, result 분류
+4)Analyzer (추가 예정)
+- CSV 기반 통계/차트
+- Crash/Timeout 패턴 분석
