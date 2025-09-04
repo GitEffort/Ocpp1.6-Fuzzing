@@ -9,6 +9,13 @@
 #  - "$UID$"는 런타임에서 치환
 #  - timestamp/retrieveDate/expiryDate 등은 실행 시 갱신 권장
 
+DICT_MUTATE_PROB = 0.5     # dict 필드 제거/재귀 변형
+DICT_JUNK_PROB   = 0.3     # dict에 "__junk__" 추가
+LIST_APPEND_PROB = 0.2     # list에 None 추가
+ACTION_SWAP_PROB = 0.2     # 액션 스왑
+PAYLOAD_MUTATE_PROB = 1.0  # payload 변형 (항상 시도)
+HEADER_CORRUPT_PROB = 0.1  # 헤더 파괴 확률
+
 NORMAL_SEEDS = [
     # ---- CP -> CSMS 정상 요청 ----
     # BootNotification
