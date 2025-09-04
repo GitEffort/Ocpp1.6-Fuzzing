@@ -15,6 +15,7 @@ LIST_APPEND_PROB = 0.2     # list에 None 추가
 ACTION_SWAP_PROB = 0.2     # 액션 스왑
 PAYLOAD_MUTATE_PROB = 1.0  # payload 변형 (항상 시도)
 HEADER_CORRUPT_PROB = 0.1  # 헤더 파괴 확률
+BASELINE_SAVE_PROB = 0.2  # baseline 프레임 저장 확률(옵션 켜진 경우)
 
 NORMAL_SEEDS = [
     # ---- CP -> CSMS 정상 요청 ----

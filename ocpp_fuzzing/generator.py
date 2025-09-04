@@ -2,7 +2,8 @@ import json, random, argparse, copy
 import string
 from pathlib import Path
 from typing import List, Union, Any
-from .seeds import DEFAULT_SEEDS, DICT_MUTATE_PROB, DICT_JUNK_PROB, LIST_APPEND_PROB, ACTION_SWAP_PROB, HEADER_CORRUPT_PROB 
+from .seeds import DEFAULT_SEEDS, DICT_MUTATE_PROB, DICT_JUNK_PROB, LIST_APPEND_PROB, ACTION_SWAP_PROB, HEADER_CORRUPT_PROB, BASELINE_SAVE_PROB
+
 
 def make_dir(path):
     path.mkdir(parents=True, exist_ok=True)
@@ -137,9 +138,6 @@ def make_variants(message_frame: list, n_variants: int):
 
     return variants
 
-# --- 확률/파라미터 상수 -------------------------------------------------------
-BASELINE_SAVE_PROB = 0.2  # baseline 프레임 저장 확률(옵션 켜진 경우)
-
 def main():
     """
     OCPP Fuzz JSON 코퍼스를 생성합니다.
@@ -149,7 +147,7 @@ def main():
     개수: --target 개수 맞출 때까지 생성 (baseline 포함 여부는 옵션/확률에 따름)
     """
     parser = argparse.ArgumentParser(description="Create OCPP Fuzz JSON corpus")
-    parser.add_argument("--dir", default="..\\corpus_out", help="출력 디렉터리")
+    parser.add_argument("--dir", default="corpus_out", help="출력 디렉터리")
     parser.add_argument("--target", type=int, required=True, help="생성할 총 파일 개수")
     parser.add_argument("--min", type=int, default=1, help="Variant 최소값")
     parser.add_argument("--max", type=int, default=5, help="Variant 최대값")
