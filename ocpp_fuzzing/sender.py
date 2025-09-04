@@ -19,9 +19,9 @@ FRAME_MIN_FIELDS = 3          # [msgTypeId, uniqueId, action, ...] 최소 3개
 
 def iter_input_records(input_path):
     """
-        @param input_path: JSON 파일/JSONL/디렉터리 경로
-        @return: (Path(표시용), parsed JSON 객체) 튜플을 생성하는 Generatpor
-        @note: Path(표시용)는 JSONL인 경우 "파일명:라인번호" 형태
+    @param input_path: JSON 파일/JSONL/디렉터리 경로
+    @return: (Path(표시용), parsed JSON 객체) 튜플을 생성하는 Generatpor
+    @note: Path(표시용)는 JSONL인 경우 "파일명:라인번호" 형태
     """
     p = Path(input_path)
 
@@ -44,10 +44,10 @@ def iter_input_records(input_path):
 
 def replace_uid_if_enabled(frame, enable_replace):
     """
-        @param frame: OCPP 메시지 프레임
-        @param enable_replace: uniqueId 교체 여부
-        @return: uniqueId가 교체된 새 프레임 (원본은 변경 안 함)
-        @note: uniqueId가 "$UID$"이거나 문자열이면 새 uuid4로 교체
+    @param frame: OCPP 메시지 프레임
+    @param enable_replace: uniqueId 교체 여부
+    @return: uniqueId가 교체된 새 프레임 (원본은 변경 안 함)
+    @note: uniqueId가 "$UID$"이거나 문자열이면 새 uuid4로 교체
     """
     if not enable_replace:
         return frame
@@ -62,11 +62,11 @@ def replace_uid_if_enabled(frame, enable_replace):
 
 def classify_response(resp):
     """
-        @param resp: send_frame_and_receive() 반환값
-        @return: 분류 문자열
-        - CallResult   : "CallResult"
-        - CallError    : "CallError:<errorCode>" 또는 "CallError"
-        - 그외         : str(resp) (ex: "TIMEOUT", "CLOSED:<code>", "EXC:<msg>")
+    @param resp: send_frame_and_receive() 반환값
+    @return: 분류 문자열
+    - CallResult   : "CallResult"
+    - CallError    : "CallError:<errorCode>" 또는 "CallError"
+    - 그외         : str(resp) (ex: "TIMEOUT", "CLOSED:<code>", "EXC:<msg>")
     """
     if isinstance(resp, list) and len(resp) >= 1:
         if resp[0] == 3:
@@ -81,14 +81,14 @@ def classify_response(resp):
 
 async def send_frame_and_receive(ws, frame, timeout=RECV_TIMEOUT_SEC):
     """
-        @param ws:  websockets 연결 객체
-        @param frame: 전송할 OCPP 메시지 프레임 (list)
-        @param timeout: 응답 대기 타임아웃(초)
-        @return: 서버 응답(CallResult/CallError) 또는 예외 상황 문자열
+    @param ws:  websockets 연결 객체
+    @param frame: 전송할 OCPP 메시지 프레임 (list)
+    @param timeout: 응답 대기 타임아웃(초)
+    @return: 서버 응답(CallResult/CallError) 또는 예외 상황 문자열
 
-        @note:  서버 응답이 없을 경우 : TIMEOUT
-                연결이 닫힐 경우 : CLOSED:<code>
-                그 외 예외 : EXC:<msg>
+    @note:  서버 응답이 없을 경우 : TIMEOUT
+            연결이 닫힐 경우 : CLOSED:<code>
+            그 외 예외 : EXC:<msg>
     """
     try:
         await ws.send(json.dumps(frame))
@@ -104,15 +104,15 @@ async def send_frame_and_receive(ws, frame, timeout=RECV_TIMEOUT_SEC):
 
 async def main():
     """
-        @note:
-        - --input : (JSON 파일/JSONL/디렉터리) 입력
-        - --replace-uid : uniqueId 교체
-        - --csv : (결과 CSV 경로) 출력
-        - --uri : WebSocket 서버
-        - --subp : WebSocket subprotocols (기본: ocpp1.6)
-        - --timeout : 서버 응답 타임아웃(초, 기본 8초)
-        - CSV 컬럼: input, result
-        - result: CallResult, CallError:<errorCode>, CallError, TIMEOUT, CLOSED:<code>, EXC:<msg>
+    @note:
+    - --input : (JSON 파일/JSONL/디렉터리) 입력
+    - --replace-uid : uniqueId 교체
+    - --csv : (결과 CSV 경로) 출력
+    - --uri : WebSocket 서버
+    - --subp : WebSocket subprotocols (기본: ocpp1.6)
+    - --timeout : 서버 응답 타임아웃(초, 기본 8초)
+    - CSV 컬럼: input, result
+    - result: CallResult, CallError:<errorCode>, CallError, TIMEOUT, CLOSED:<code>, EXC:<msg>
     """
     parser = argparse.ArgumentParser(description="Replay OCPP JSON files to server.")
     parser.add_argument("--input", required=True, help="JSON 파일/JSONL/디렉터리 경로")

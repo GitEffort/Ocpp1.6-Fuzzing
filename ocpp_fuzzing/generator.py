@@ -6,9 +6,18 @@ from .seeds import DEFAULT_SEEDS, DICT_MUTATE_PROB, DICT_JUNK_PROB, LIST_APPEND_
 
 
 def make_dir(path):
+    """
+    @param path: Path 객체
+    @note: 디렉터리가 없으면 생성
+    """
     path.mkdir(parents=True, exist_ok=True)
 
 def normalize_action_name(action):
+    """
+    @param action: 액션 이름 (문자열 또는 기타)
+    @return: 파일명에 안전한 액션 이름
+    @note: 영숫자, '-', '_' 외 문자는 '_'로 치환
+    """
     raw_name = str(action or "Unknown")
     return "".join(
         ch if ch.isalnum() or ch in ("-", "_") else "_"
@@ -17,22 +26,24 @@ def normalize_action_name(action):
 
 def mutate_payload(payload):
     """
-    주어진 payload를 (깊은 복사 후) 무작위 규칙으로 재귀 변형하여 반환합니다.
+    @param payload: 변형할 원본 payload
+    @return: 변형된 payload (원본은 보존)
+    @note: 주어진 payload를 (깊은 복사 후) 무작위 규칙으로 재귀 변형하여 반환합니다.
 
     규칙
-      1) dict
-         - 50%: 임의의 키를 선택해 (a) 필드 제거 또는 (b) 해당 값 재귀 변형
-         - 30%: 임시 필드 추가(랜덤 영숫자 1~50자)
-      2) list
-         - 모든 원소 재귀 변형
-         - 20%: 리스트 끝에 None 추가
-      3) str
-         - 무작위로 다음 중 하나 적용: 유지 / 빈문자열 / oversize(뒤에 'A' 25~200개 추가) / 정수로 강제(12345)
-      4) int/float
-         - -1, 0, 원래값, 10**9 중 하나로 치환
+    1) dict
+        - 50%: 임의의 키를 선택해 (a) 필드 제거 또는 (b) 해당 값 재귀 변형
+        - 30%: 임시 필드 추가(랜덤 영숫자 1~50자)
+    2) list
+        - 모든 원소 재귀 변형
+        - 20%: 리스트 끝에 None 추가
+    3) str
+        - 무작위로 다음 중 하나 적용: 유지 / 빈문자열 / oversize(뒤에 'A' 25~200개 추가) / 정수로 강제(12345)
+    4) int/float
+        - -1, 0, 원래값, 10**9 중 하나로 치환
 
     반환값:
-      - 변형된 payload (원본은 보존)
+    - 변형된 payload (원본은 보존)
     """
     # 원본 변경 방지
     payload = copy.deepcopy(payload)
@@ -89,7 +100,9 @@ def mutate_payload(payload):
 
 def make_variants(message_frame: list, n_variants: int):
     """
-    주어진 OCPP 프레임을 여러 개 변형하여 반환합니다.
+    @param message_frame: 원본 메시지 프레임
+    @param n_variants: 생성할 변형 개수
+    @note: 주어진 OCPP 프레임을 여러 개 변형하여 반환합니다.
 
     프레임 구조 가정:
         [2, unique_id, Action, payload]
@@ -140,11 +153,10 @@ def make_variants(message_frame: list, n_variants: int):
 
 def main():
     """
-    OCPP Fuzz JSON 코퍼스를 생성합니다.
-
-    입력 시드: DEFAULT_SEEDS (각 시드는 [2, unique_id, Action, payload] 가정)
-    출력: --dir 에 fuzz/baseline JSON 파일들 기록
-    개수: --target 개수 맞출 때까지 생성 (baseline 포함 여부는 옵션/확률에 따름)
+    @note: OCPP Fuzz JSON 코퍼스를 생성합니다.
+        입력 시드: DEFAULT_SEEDS (각 시드는 [2, unique_id, Action, payload] 가정)
+        출력: --dir 에 fuzz/baseline JSON 파일들 기록
+        개수: --target 개수 맞출 때까지 생성 (baseline 포함 여부는 옵션/확률에 따름)
     """
     parser = argparse.ArgumentParser(description="Create OCPP Fuzz JSON corpus")
     parser.add_argument("--dir", default="corpus_out", help="출력 디렉터리")

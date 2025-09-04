@@ -28,7 +28,8 @@ log = logging.getLogger("ocpp-server")
 
 class CentralSystem(ChargePointBase):
     """
-    OCPP 1.6 CSMS 데모 핸들러.
+    @param ChargePointBase: ocpp.v16.ChargePoint 기반
+    @note: OCPP 1.6 CSMS 데모 핸들러.
     - NORMAL_SEEDS의 표준 CP->CSMS 요청 처리
     - VIOLATION_SEEDS의 '방향 위반' 액션도 CallResult로 수용(테스트 편의 목적)
     - EDGECASE_SEEDS의 변형/경계값도 최소 스키마로 응답
@@ -207,10 +208,11 @@ class CentralSystem(ChargePointBase):
 
 async def handle_connection(ws):
     """
-    클라이언트와의 핸드셰이크가 끝난 후 호출되는 엔트리.
-    - 서브프로토콜 확인
-    - 경로에서 ChargePoint ID 추출
-    - 중앙 시스템 핸들러 구동
+    @param ws: websockets 연결 객체
+    @note: 클라이언트와의 핸드셰이크가 끝난 후 호출되는 엔트리.
+        - 서브프로토콜 확인
+        - 경로에서 ChargePoint ID 추출
+        - 중앙 시스템 핸들러 구동
     """
     try:
         peer = getattr(ws, "remote_address", None)
