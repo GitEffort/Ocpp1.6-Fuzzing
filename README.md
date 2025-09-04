@@ -47,16 +47,36 @@ OCPP_FUZZING/
     - 모든 테스트 케이스의 응답을 CSV 로그로 저장
     - 주요 지표: latency, errorCode, result
 
-# Quick Start
-1) 테스트 서버 실행 (CSMS)
-python scripts/run_server.py --host 0.0.0.0 --port 9000
-2) corpus 생성
-python scripts/run_generator.py \
-  --dir corpus_out --target 50 --min 1 --max 5 --baseline --seed 42
-3) 전송
-python scripts/run_sender.py \
-  --input corpus_out --replace-uid --csv replay_result.csv \
-  --uri ws://127.0.0.1:9000/CP_REPLAY
+# Usage Guide
+1) Run Test Server (CSMS)
+   
+```python scripts/run_server.py --host 0.0.0.0 --port 9000```
+| Option    | Description                                    |
+| ---------- | ---------------------------------------------- |
+| --host | Bind host address (default: 0.0.0.0, all interfaces)                |
+| --port | TCP port to listen on (default: 9000)                |
+
+2) Generate Corpus
+
+```python scripts/run_generator.py --dir corpus_out --target 50 --min 1 --max 5 --baseline --seed 42```
+| Option    | Description                                    |
+| ---------- | ---------------------------------------------- |
+| --dir | Output directory where generated corpus JSON files are saved                |
+| --target | Total number of files to generate (required)                |
+| --min | Minimum number of variants per seed (default: 1)                |
+| --max | Maximum number of variants per seed (default: 5)                |
+| --baseline | Include original (unmutated) baseline frames in output (~20% probability)                |
+| --seed | Random seed for reproducibility (e.g., 42)                |
+
+3) Replay / Send to Server
+
+```python scripts/run_sender.py --input corpus_out --replace-uid --csv replay_result.csv --uri ws://127.0.0.1:9000/CP_REPLAY```
+| Option    | Description                                    |
+| ---------- | ---------------------------------------------- |
+| --input | Input path: directory, single JSON file, or .jsonl file with multiple cases                |
+| --replace-uid | Replace $UID$ or existing uniqueId with a fresh UUID at runtime                |
+| --csv | Path to save replay results in CSV format (default: replay_result.csv)                |
+| --uri | WebSocket URI of the target server (must support subprotocol ocpp1.6)                |
 
 # Features
 1) 자동 시드/변형 생성 기반 퍼징
