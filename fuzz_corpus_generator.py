@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import List, Union, Any
 from ocpp_seeds import DEFAULT_SEEDS, DICT_MUTATE_PROB, DICT_JUNK_PROB, LIST_APPEND_PROB, ACTION_SWAP_PROB, HEADER_CORRUPT_PROB 
 
-
 def make_dir(path):
     path.mkdir(parents=True, exist_ok=True)
 
@@ -87,13 +86,9 @@ def mutate_payload(payload):
     # 기타 타입은 그대로 반환
     return payload
 
-import copy
-import random
-from typing import List
-
 def make_variants(message_frame: list, n_variants: int):
     """
-    주어진 OCPP-like 프레임을 여러 개 변형하여 반환합니다.
+    주어진 OCPP 프레임을 여러 개 변형하여 반환합니다.
 
     프레임 구조 가정:
         [2, unique_id, Action, payload]
@@ -141,11 +136,6 @@ def make_variants(message_frame: list, n_variants: int):
         variants.append(frame_copy)
 
     return variants
-
-import argparse
-import json
-import random
-from pathlib import Path
 
 # --- 확률/파라미터 상수 -------------------------------------------------------
 BASELINE_SAVE_PROB = 0.2  # baseline 프레임 저장 확률(옵션 켜진 경우)
