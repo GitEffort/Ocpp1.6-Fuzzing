@@ -32,14 +32,14 @@ OCPP_FUZZING/
     - VIOLATION_SEEDS : 원래 CSMS→CP가 보내는 요청을 CP가 보낸 것으로 가정하는 “방향 위반” 시나리오
     - EDGECASE_SEEDS : 빈/이상치/경계값 등의 케이스
 2) Generator (ocpp_fuzzing/generator.py)
-  OCPP 시드 메시지(Authorize, BootNotification 등) 자동 생성
-  변형 적용
-    - 필드 누락
-    - 타입 변경
-    - oversize 문자열 삽입
-    - 의미없는 필드 추가
+      - OCPP 시드 메시지(Authorize, BootNotification 등) 자동 생성
+      변형 적용
+        - 필드 누락
+        - 타입 변경
+        - oversize 문자열 삽입
+        - 의미없는 필드 추가
 
-3) Sender (ocpp_fuzzing/sender.py)
+4) Sender (ocpp_fuzzing/sender.py)
     - WebSocket (subprotocol=ocpp1.6) 기반 메시지 전송
     - 서버 응답(CallResult / CallError) 및 예외 상황(TIMEOUT / CLOSED) 수집
 
